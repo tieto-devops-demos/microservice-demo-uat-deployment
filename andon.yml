@@ -30,7 +30,7 @@ compile:
   go_cd_agent_props:
     - ansible
   stages:
-    - stage: UAT Deploy
+    - stage: UAT_Deploy
       jobs:
         - job: Deploy
           tasks:  
