@@ -30,9 +30,9 @@ compile:
   go_cd_agent_props:
     - ansible
   stages:
-    - stage: 
+    - stage: UAT Deploy
       jobs:
-        - job: Chrome
+        - job: Deploy
           tasks:  
             - task: curl 131.207.26.213:8080/jenkins/job/DevOpsDemoUatDeployment/buildWithParameters?ImageTag=UAT.$GO_PIPELINE_COUNTER
 #        build_path: .
