@@ -22,14 +22,21 @@ pre_stage:
 #    - sudo docker push eekamak/eureka:latest
     - sudo docker tag zuul:$GO_DEPENDENCY_LABEL_ZUUL_MASTER 131.207.26.214:5000/zuul:UAT.$GO_PIPELINE_COUNTER
     - sudo docker push 131.207.26.214:5000/zuul:UAT.$GO_PIPELINE_COUNTER
+
+
+
+
 production:
   go_cd_agent_props:
     - ansible
   trigger_mode: automatic
   type: parallel
-  commands:
-    - tasks:
-      - cmd: curl 131.207.26.213:8080/jenkins/job/DevOpsDemoUatDeployment/buildWithParameters?ImageTag=UAT.$GO_PIPELINE_COUNTER
+  stages:
+    - stage: 
+      jobs:
+        - job: Chrome
+          tasks:  
+            - task: curl 131.207.26.213:8080/jenkins/job/DevOpsDemoUatDeployment/buildWithParameters?ImageTag=UAT.$GO_PIPELINE_COUNTER
 #        build_path: .
 #      - cmd: docker 1
 #      job_name: AnsibleJob
