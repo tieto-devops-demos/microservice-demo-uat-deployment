@@ -29,8 +29,6 @@ pre_stage:
 compile:
   go_cd_agent_props:
     - ansible
-  trigger_mode: automatic
-  type: parallel
   stages:
     - stage: 
       jobs:
