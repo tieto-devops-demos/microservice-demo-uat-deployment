@@ -1,6 +1,6 @@
 general:
   whitelist: true
-  pipeline_base_name: Prod Deployment
+  pipeline_base_name: UAT Deployment
   dependency:
    - Microservice_Acceptance [PostStage]
 
