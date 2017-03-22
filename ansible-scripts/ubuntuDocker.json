@@ -22,7 +22,7 @@
           "os_family":"Linux",
           "os_version":"14.04",
           "hostname":"demo",
-          "flavor":"2C-4GB",
+          "flavor":"2C-8GB-50GB",
           "imagename":"A_ubuntu-server-14.04.03",
           "hiera_file":"http://localhost/templates/hiera_templates/ubuntuldap.yaml",
           "ldap_locality": "city"
