@@ -2,6 +2,7 @@
 - hosts: localhost
   connection: local
   vars:
+    - hostname: "demo"
     - tds_username: "{{ lookup('env','tds_username') }}"
     - tds_password: "{{ lookup('env','tds_password') }}"
     - tenant_id: "{{lookup('env','tenant_id')}}"
@@ -12,35 +13,24 @@
   tasks:
 
   - include: tasks/login.yml
+  - include: tasks/get-instance.yml
 
   - name: Deploy Ubuntu instance to Tieto Public TDS
     uri:
       url: "{{ tds_url }}/tenants/{{ tenant_id }}/instances"
       validate_certs: False
       method: POST
-      #body_format: json
       body: "{{ lookup('template','ubuntuDocker.json') | to_json }}"
       headers:
         Authentication: "{{ auth_token }}"
         Content-Type: "application/json"
       timeout: 60
       return_content: yes
+    when: entity_id is undefined
     register: json_response
-
-  - debug: var="{{ (json_response.content|from_json) }}"
 
   - set_fact:
       entity_id: "{{ (json_response.content|from_json)[0]['entityid'] }}"
+    when: json_response.content is defined
 
-  - name: Wait for Instance
-    wait_for:
-      host: demo.andondev.pub.tds.tieto.com
-      port: 22
-      delay: 10
-      timeout: 600
-      state: started
-      search_regex: "SSH-2.0-OpenSSH"
-
-  - name: Pause playbook for 10 seconds
-    pause:
-      seconds: 10
+  - include: tasks/wait-for-instance.yml

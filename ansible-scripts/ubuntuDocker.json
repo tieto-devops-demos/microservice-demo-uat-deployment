@@ -21,7 +21,7 @@
           "env_cost_period":"monthly",
           "os_family":"Linux",
           "os_version":"14.04",
-          "hostname":"demo",
+          "hostname":"{{hostname}}",
           "flavor":"2C-8GB-50GB",
           "imagename":"A_ubuntu-server-14.04.03",
           "hiera_file":"http://localhost/templates/hiera_templates/ubuntuldap.yaml",
