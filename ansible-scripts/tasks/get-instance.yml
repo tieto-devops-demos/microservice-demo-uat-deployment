@@ -1,0 +1,16 @@
+---
+- name: Get TDS Instances
+  uri:
+    url: "{{ tds_url }}/tenants/{{ tenant_id }}/instances"
+    validate_certs: False
+    method: GET
+    headers: {Authentication: "{{ auth_token }}"}
+    return_content: yes
+  register: json_response
+
+- debug: var={{json_response.json}}
+
+- set_fact:
+    entity_id: "{{json_response.json|json_query(id_query)}}"
+  vars:
+    id_query: "[?hostname =='demo'].entityid"

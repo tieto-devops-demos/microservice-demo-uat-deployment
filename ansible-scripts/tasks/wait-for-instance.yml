@@ -1,0 +1,15 @@
+---
+- debug: var={{hostname}}
+
+- name: Wait for Instance
+  wait_for:
+    host: "{{hostname}}.andondev.pub.tds.tieto.com"
+    port: 22
+    delay: 10
+    timeout: 600
+    state: started
+    search_regex: "SSH-2.0-OpenSSH"
+
+- name: Pause playbook for 10 seconds
+  pause:
+    seconds: 10
