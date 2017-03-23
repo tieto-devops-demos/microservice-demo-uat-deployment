@@ -3,7 +3,7 @@
   become: yes
 
   vars:
-    - git_url: https://raw.githubusercontent.com/tieto-devops-demos/microservice-demo-production-deployment/master/docker-compose/docker-compose.yml
+    - git_url: https://raw.githubusercontent.com/tieto-devops-demos/microservice-demo-uat-deployment/master/docker-compose/docker-compose.yml
     - ssh_user: "{{lookup('env','ssh_user')}}"
     - microservice_home: /home/{{ ssh_user }}
     - git_dest: /var/tmp/git
