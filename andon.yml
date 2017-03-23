@@ -9,6 +9,7 @@ pre_stage:
     - ansible
   custom_cmd:
     - sudo ansible-galaxy install angstwad.docker_ubuntu
+    - sudo pip install jmespath
     - sudo chown -R go:go /var/go
 
 production:
