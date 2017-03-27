@@ -8,9 +8,14 @@
     return_content: yes
   register: json_response
 
-- debug: var={{json_response.json}}
+- debug: var=json_response.content
 
 - set_fact:
-    entity_id: "{{json_response.json|json_query(id_query)}}"
+    entity_id: "{{ json_response.content | from_json | json_query(id_query) }}"
   vars:
-    id_query: "[?hostname =='demo'].entityid"
+    id_query: "[?hostname =='{{hostname}}'].entityid | [0]"
+
+- set_fact:
+    fqdn: "{{ json_response.content | from_json | json_query(id_query) }}"
+  vars:
+    id_query: "[?hostname =='demo'].connections[0].target | [0]"

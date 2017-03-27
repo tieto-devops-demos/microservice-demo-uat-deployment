@@ -1,9 +1,7 @@
 ---
-- debug: var={{hostname}}
-
 - name: Wait for Instance
   wait_for:
-    host: "{{hostname}}.andondev.pub.tds.tieto.com"
+    host: "{{ip_address}}"
     port: 22
     delay: 10
     timeout: 600

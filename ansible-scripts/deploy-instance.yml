@@ -10,12 +10,16 @@
     - ssh_rsa_key: "{{lookup('env','ssh_rsa_key')}}"
     - ssh_user: "{{lookup('env','ssh_user')}}"
 
+
   tasks:
 
   - include: tasks/login.yml
   - include: tasks/get-instance.yml
 
-  - name: Deploy Ubuntu instance to Tieto Public TDS
+  - debug: var=entity_id
+  - debug: var=fqdn
+
+  - name: Deploy Ubuntu instance from TDS if entity does not exist
     uri:
       url: "{{ tds_url }}/tenants/{{ tenant_id }}/instances"
       validate_certs: False
@@ -26,11 +30,44 @@
         Content-Type: "application/json"
       timeout: 60
       return_content: yes
-    when: entity_id is undefined
+    when: entity_id == ''
     register: json_response
 
-  - set_fact:
-      entity_id: "{{ (json_response.content|from_json)[0]['entityid'] }}"
-    when: json_response.content is defined
+  - name: Pause playbook for 5 seconds
+    pause:
+      seconds: 5
+
+  - include: tasks/get-instance.yml
+
+  - name: Get instance ip-address from Google DNS
+    set_fact: ip_address="{{ lookup('dig', '{{fqdn}}', '@8.8.8.8') }}"
+    until: ip_address != "NXDOMAIN"
+    retries: 10
+    delay: 10
+
+  - name: Fail play if ip address is not found
+    fail: msg="Host {{hostname}} ip-address not found!"
+    when: ip_address == "NXDOMAIN"
+
+  - name: Add host ip-address to the Inventory
+    add_host:
+      groups: tds
+      name: "{{ip_address}}"
+      ansible_user: "{{ssh_user}}"
+      ansible_ssh_private_key_file: "/etc/andon/ssh_keys/id_rsa"
 
   - include: tasks/wait-for-instance.yml
+
+- hosts: tds
+  become: yes
+  vars:
+    - git_url: https://raw.githubusercontent.com/tieto-devops-demos/microservice-demo-uat-deployment/master/docker-compose/docker-compose.yml
+    - microservice_home: /home/{{ ssh_user }}
+    - git_dest: /var/tmp/git
+
+  roles:
+      - { role: 'angstwad.docker_ubuntu', become: yes, pip_version_docker_py: 1.9.0, pip_version_docker_compose: 1.9.0 }
+
+  tasks:
+
+  - include: tasks/install-microservice-demo.yml

@@ -13,6 +13,8 @@
   - include: tasks/login.yml
   - include: tasks/get-instance.yml
 
+  - debug: msg="Instance id is {{entity_id}}"
+
   - name: Delete Instance from Tieto Public TDS
     uri:
       url: "{{tds_url}}/tenants/{{tenant_id}}/instances/{{entity_id}}"
