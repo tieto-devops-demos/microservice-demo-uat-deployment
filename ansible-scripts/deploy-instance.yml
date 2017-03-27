@@ -41,14 +41,17 @@
 
   - name: Get instance ip-address from Google DNS
     command: "dig +short {{ fqdn}} @8.8.8.8"
-    register: ip_address
-    until: ip_address != "NXDOMAIN"
+    register: resolved
+    until: resolved.stdout != ''
     retries: 20
     delay: 10
 
+  - set_fact:
+      ip_address: "{{resolved.stdout}}"
+
   - name: Fail play if ip address is not found
     fail: msg="Host {{hostname}} ip-address not found!"
-    when: ip_address == "NXDOMAIN"
+    when: ip_address == ''
 
   - name: Add host ip-address to the Inventory
     add_host:
