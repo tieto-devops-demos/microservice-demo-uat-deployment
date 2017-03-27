@@ -40,7 +40,8 @@
   - include: tasks/get-instance.yml
 
   - name: Get instance ip-address from Google DNS
-    set_fact: ip_address="{{ lookup('dig', '{{fqdn}}', '@8.8.8.8') }}"
+    command: "dig +short {{ fqdn}} @8.8.8.8"
+    register: ip_address
     until: ip_address != "NXDOMAIN"
     retries: 20
     delay: 10
