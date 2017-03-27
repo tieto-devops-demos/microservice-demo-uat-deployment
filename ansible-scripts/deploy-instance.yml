@@ -42,7 +42,7 @@
   - name: Get instance ip-address from Google DNS
     set_fact: ip_address="{{ lookup('dig', '{{fqdn}}', '@8.8.8.8') }}"
     until: ip_address != "NXDOMAIN"
-    retries: 10
+    retries: 20
     delay: 10
 
   - name: Fail play if ip address is not found
