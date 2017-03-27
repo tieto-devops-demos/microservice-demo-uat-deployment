@@ -40,7 +40,7 @@
   - include: tasks/get-instance.yml
 
   - name: Get instance ip-address from Google DNS
-    command: "dig +short {{ fqdn}} @8.8.8.8"
+    command: "dig +short {{ fqdn }} @8.8.8.8"
     register: resolved
     until: resolved.stdout != ''
     retries: 20
