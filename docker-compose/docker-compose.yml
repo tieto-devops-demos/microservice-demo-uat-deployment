@@ -28,6 +28,10 @@ services:
      - eureka
     ports:
       - "8080:8080"
+   demodb: 
+    image: mongo:3.5.5
+    expose: 
+     - "27017"
 #  turbine:
 #    image: eekamak/turbine
 #    links:
