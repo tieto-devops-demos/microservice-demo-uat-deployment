@@ -1,40 +1,58 @@
 version: '2'
 services:
   eureka:
-    image: eekamak/eureka
-    expose:
-      - "8761"
+    image: andon/eureka
+    ports:
+      - "8761:8761"
+    networks:
+      - front-tier
+
   customer:
-    image: eekamak/customer
-    links:
-     - eureka
-    expose:
-    - "8080"
-  catalog:
-    image: eekamak/catalog
-    links:
-     - eureka
-    expose:
-    - "8080"
-  order:
-    image: eekamak/order
-    links:
-     - eureka
-    expose:
-    - "8080"
-  zuul:
-    image: eekamak/zuul
-    links:
-     - eureka
+    image: andon/customer
     ports:
       - "8080:8080"
+    networks:
+      - front-tier
+      - back-tier
+
+  catalog:
+    image: andon/catalog
+    ports:
+      - "8080:8080"
+    networks:
+      - front-tier
+      - back-tier
+
+  order:
+    image: andon/order
+    ports:
+      - "8080:8080"
+    networks:
+      - front-tier
+      - back-tier
+
+  zuul:
+    image: andon/zuul
+    ports:
+      - "8080:8080"
+    networks:
+      - front-tier
+
   demodb: 
     image: mongo:3.5.5
-    expose: 
-     - "27017"
-#  turbine:
-#    image: eekamak/turbine
-#    links:
-#     - eureka
-#    expose:
-#      - "8989"
+    ports:
+      - "27017:27017"
+    networks:
+      - back-tier
+    volumes:
+      - db-data:/data/db
+      - db-data2:/data/configdb
+
+volumes:
+  db-data:
+  db-data2:
+
+networks:
+  front-tier:
+  back-tier:  
+
