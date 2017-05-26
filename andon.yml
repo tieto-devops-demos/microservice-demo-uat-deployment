@@ -43,4 +43,3 @@ production:
             - task: /tmp/oc deploy order --latest -n ecommercev5
             - task: /tmp/oc deploy customer --latest -n ecommercev5
             - task: /tmp/oc deploy zuul --latest -n ecommercev5
-#              build_path: openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit.tar.gz
