@@ -31,7 +31,7 @@ production:
           tasks:
             - task: wget https://github.com/openshift/origin/releases/download/v1.4.1/openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit.tar.gz 
             - task: tar -xvzf openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit.tar.gz
-            - task: ./oc login https://ocp-tdemo-lb.ocp-tdemo.teco.prd.a.tecdomain.net:8443 --token=i0s84qP28TMkAQXm7xbzRVjkqRwSZ8lnrKdBZQHuuqM --insecure-skip-tls-verify=true
+            - task: ./oc login https://ocp-tdemo-lb.ocp-tdemo.teco.prd.a.tecdomain.net:8443 --token=$OSTOKEN --insecure-skip-tls-verify=true
               build_path: openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit.tar.gz
 #            - task: ./oc import docker-compose -f ../docker-compose/docker-compose.yml
 #              build_path: openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit.tar.gz
