@@ -21,6 +21,7 @@ pre_stage:
     - sudo chown -R go:go /var/go
     - sudo wget https://github.com/openshift/origin/releases/download/v1.4.1/openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit.tar.gz
     - sudo tar -xvzf openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit.tar.gz --strip-components=1
+    - sudo mv oc /tmp/ 
 
 production:
   go_cd_agent_props:
@@ -37,9 +38,9 @@ production:
 #              build_path: openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit.tar.gz
 #            - task: ./oc import docker-compose -f ../docker-compose/docker-compose.yml
 #              build_path: openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit.tar.gz
-            - task: ./oc login https://ocp-tdemo-lb.ocp-tdemo.teco.prd.a.tecdomain.net:8443 --token=$OSTOKEN --insecure-skip-tls-verify=true
-            - task: ./oc deploy catalog --latest -n ecommercev5
-            - task: ./oc deploy order --latest -n ecommercev5
-            - task: ./oc deploy customer --latest -n ecommercev5
-            - task: ./oc deploy zuul --latest -n ecommercev5
+            - task: /tmp/oc login https://ocp-tdemo-lb.ocp-tdemo.teco.prd.a.tecdomain.net:8443 --token=$OSTOKEN --insecure-skip-tls-verify=true
+            - task: /tmp/oc deploy catalog --latest -n ecommercev5
+            - task: /tmp/oc deploy order --latest -n ecommercev5
+            - task: /tmp/oc deploy customer --latest -n ecommercev5
+            - task: /tmp/oc deploy zuul --latest -n ecommercev5
 #              build_path: openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit.tar.gz
