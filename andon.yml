@@ -26,7 +26,7 @@ pre_stage:
 production:
   go_cd_agent_props:
     - ansible
-#  trigger_mode: automatic
+  trigger_mode: automatic
   stages:
     - stage: OpenShift
       jobs:
