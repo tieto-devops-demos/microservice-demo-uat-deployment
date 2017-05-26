@@ -1,12 +1,12 @@
 general:
   whitelist: true
-  pipeline_base_name: UAT Deployment
+  pipeline_base_name: OpenShift UAT Deployment
   dependency:
-    - Microservice_Acceptance [PostStage]
-#   - Catalog [PostStage]
-#   - Customer [PostStage]
-#   - Order [PostStage]
-#   - Zuul [PostStage]
+#    - Microservice_Acceptance [PostStage]
+   - Catalog [PostStage]
+   - Customer [PostStage]
+   - Order [PostStage]
+   - Zuul [PostStage]
 #   - AndroidApp [BuildAPK]
 
 pre_stage:
