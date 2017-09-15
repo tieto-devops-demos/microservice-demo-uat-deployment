@@ -1,0 +1,40 @@
+pipelines:
+  dev-deployment:
+    environment_variables:
+
+    secure_variables:
+
+    group: EmmaMaija
+    materials:
+      dev-deployment:  # this is the name of material
+        # says about type of material and url at once
+        git: https://github.com/tieto-devops-demos/microservice-demo-uat-deployment.git
+        auto_update: true
+#      acceptancetesting_master:
+        # type is optional here, material type is implied based on presence of pipeline and stage fields
+        # type: dependency
+#        pipeline: acceptancetesting
+#        stage: post
+    stages:
+      - deploy: # name of stage
+          jobs:
+            oc: # name of the job
+              andon: # andon job configuration
+                image: "andon.artifactorypro.shared.pub.tds.tieto.com/andon-gocd-agent-oc-centos7:17.09" # elastic agent image
+              tasks:
+               - exec: # indicates type of task
+                   command: bash
+                   arguments:
+                    - "-c"
+                    - "oc login $OC_ADDRESS --username=$OC_USERNAME --password=OC_PASSWORD"
+               - exec: # indicates type of task
+                   command: bash
+                   arguments:
+                    - "-c"
+                    - "oc project $OC_PROJECT"
+               - exec: # indicates type of task
+                   command: bash
+                   arguments:
+                    - "-c"
+                    - "oc import-image person:latest --from=emmamaija-qa.artifactorypro.shared.pub.tds.tieto.com/person"
+                    # - "oc deploy emmamaija-person-service --latest -n emmamaija-dev"
