@@ -24,15 +24,9 @@ pipelines:
                    command: bash
                    arguments:
                     - "-c"
-                    - "oc login $OC_ADDRESS --username=$OC_USERNAME --password=OC_PASSWORD"
+                    - "oc version"
                - exec: # indicates type of task
                    command: bash
                    arguments:
                     - "-c"
-                    - "oc project $OC_PROJECT"
-               - exec: # indicates type of task
-                   command: bash
-                   arguments:
-                    - "-c"
-                    - "oc import-image person:latest --from=emmamaija-qa.artifactorypro.shared.pub.tds.tieto.com/person"
-                    # - "oc deploy emmamaija-person-service --latest -n emmamaija-dev"
+                    - "atomic --version"
